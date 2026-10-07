@@ -1,0 +1,138 @@
+{# ==========================================================================
+   Hero Partial: 3-Card 3D Carousel / Stage
+   ========================================================================== #}
+<section id="hero" class="hero-section" aria-label="Introduction Stage">
+  <div class="hero-carousel-viewport">
+    <div class="hero-carousel-track" role="region" aria-label="Interactive 3D Stage Carousel">
+
+      {# --------------------------------------------------------------------
+         Card 0 (Left by default): The Analyst / Academic Integrity
+         -------------------------------------------------------------------- #}
+      <article class="hero-stage-card" data-card-pos="left" data-card-id="academic" tabindex="0" aria-label="Academic Integrity Card">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="tag-pill tag-accent">
+            <i data-lucide="award" style="width: 13px; height: 13px;"></i>
+            <span>THE ANALYST</span>
+          </div>
+          <div>
+            <div class="cgpa-display">{{ data.profile.cgpa }}</div>
+            <div class="cgpa-label">ACADEMIC INTEGRITY &bull; SCALE {{ data.profile.cgpa_max }}</div>
+          </div>
+          <p style="font-size: 1.05rem; font-weight: 400; color: #ffffff; line-height: 1.5;">
+            {{ data.profile.degree }}
+          </p>
+          <p style="font-size: 0.95rem; color: rgba(245, 235, 224, 0.75);">
+            {{ data.profile.college }}
+          </p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.12);">
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sand);">CLASS RANKING</span>
+            <span style="font-size: 0.95rem; font-weight: 600; color: #ffffff;">Distinction Honors</span>
+          </div>
+          <button type="button" class="side-card-badge" aria-label="Bring academic card to center">
+            <i data-lucide="plus" style="width: 20px; height: 20px;"></i>
+          </button>
+        </div>
+      </article>
+
+      {# --------------------------------------------------------------------
+         Card 1 (Center active by default): Primary Profile
+         -------------------------------------------------------------------- #}
+      <article class="hero-stage-card" data-card-pos="center" data-card-id="profile" tabindex="0" aria-label="Ajay Dilip Bobade Profile Card">
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+          <!-- Availability Pill -->
+          <div class="tag-pill tag-success">
+            <span class="status-dot"></span>
+            <span>{{ data.profile.availability }}</span>
+          </div>
+
+          <!-- Avatar Frame (User Icon or Photo) -->
+          <div class="avatar-frame">
+            <!-- Swap icon for an <img> tag if custom photo is available -->
+            <i data-lucide="user" style="width: 58px; height: 58px; stroke-width: 1.5;"></i>
+          </div>
+
+          <!-- Name & Role -->
+          <h1 class="hero-name">{{ data.profile.name }}</h1>
+          <div class="hero-role">{{ data.profile.role }}</div>
+
+          <p style="font-size: 0.92rem; color: rgba(245, 235, 224, 0.85); line-height: 1.6; max-width: 340px; margin-bottom: 1.5rem;">
+            {{ data.profile.bio }}
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1.25rem;">
+          <!-- Dark Espresso Pill Button -->
+          <a href="#work" class="btn-espresso-pill" style="width: 100%;">
+            <span>VIEW MY WORK</span>
+            <i data-lucide="arrow-down" style="width: 16px; height: 16px;"></i>
+          </a>
+
+          <!-- Social Icons Row (Cream / White) -->
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            {% for soc in data.socials %}
+              <a href="{{ soc.url }}" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="{{ soc.aria_label }}">
+                <i data-lucide="{{ soc.icon }}" style="width: 18px; height: 18px;"></i>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </article>
+
+      {# --------------------------------------------------------------------
+         Card 2 (Right by default): Executive Briefing & Skills
+         -------------------------------------------------------------------- #}
+      <article class="hero-stage-card" data-card-pos="right" data-card-id="briefing" tabindex="0" aria-label="Executive Briefing Card">
+        <div style="display: flex; flex-direction: column; gap: 1.1rem;">
+          <div class="tag-pill">
+            <i data-lucide="sparkles" style="width: 13px; height: 13px;"></i>
+            <span>BRIEFING</span>
+          </div>
+          <h3 style="font-size: 1.45rem; font-weight: 700; color: #ffffff;">
+            Data Architecture & Analytics
+          </h3>
+          <p style="font-size: 0.95rem; color: rgba(245, 235, 224, 0.82); line-height: 1.65;">
+            {{ data.profile.summary }}
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.5rem;">
+            <span style="font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sand);">PRIMARY CORE CHIPS</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.45rem;">
+              {% for chip in data.top_skills %}
+                <span class="tech-chip">{{ chip }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.12);">
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sand);">LOCATION</span>
+            <span style="font-size: 0.95rem; font-weight: 600; color: #ffffff;">{{ data.profile.location }}</span>
+          </div>
+          <button type="button" class="side-card-badge" aria-label="Bring briefing card to center">
+            <i data-lucide="plus" style="width: 20px; height: 20px;"></i>
+          </button>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- Stage Navigation Controls & Indicator Dots -->
+  <div class="carousel-controls" aria-label="Carousel Controls">
+    <button type="button" class="carousel-btn" id="heroPrevBtn" aria-label="Previous Hero Card">
+      <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i>
+    </button>
+    <div class="carousel-dots" role="tablist" aria-label="Card Selection">
+      <button type="button" class="carousel-dot" data-index="0" role="tab" aria-selected="false" aria-label="Show Academic Card"></button>
+      <button type="button" class="carousel-dot active" data-index="1" role="tab" aria-selected="true" aria-label="Show Profile Card"></button>
+      <button type="button" class="carousel-dot" data-index="2" role="tab" aria-selected="false" aria-label="Show Briefing Card"></button>
+    </div>
+    <button type="button" class="carousel-btn" id="heroNextBtn" aria-label="Next Hero Card">
+      <i data-lucide="chevron-right" style="width: 20px; height: 20px;"></i>
+    </button>
+  </div>
+</section>

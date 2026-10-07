@@ -1,0 +1,54 @@
+{# ==========================================================================
+   Project Details Modal Partial
+   ========================================================================== #}
+<div id="projectModalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalProjectTitle">
+  <div class="modal-dialog">
+    <!-- Close Button -->
+    <button type="button" id="modalCloseBtn" class="modal-close-btn" aria-label="Close Case Study Modal">
+      <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+    </button>
+
+    <!-- Tag & Title -->
+    <div style="margin-bottom: 1.5rem;">
+      <span id="modalProjectTag" class="tag-pill tag-accent" style="margin-bottom: 0.75rem;">CASE STUDY</span>
+      <h3 id="modalProjectTitle" style="font-size: 2rem; font-weight: 700; color: #ffffff; letter-spacing: -0.03em;">
+        Project Title
+      </h3>
+    </div>
+
+    <!-- Description -->
+    <p id="modalProjectDescription" style="font-size: 1.05rem; line-height: 1.7; color: rgba(245, 235, 224, 0.88); margin-bottom: 1.5rem;">
+      Full description text...
+    </p>
+
+    <!-- Key Metrics Grid -->
+    <div style="margin-top: 1.5rem;">
+      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sand);">
+        MEASURED IMPACT & BENCHMARKS
+      </span>
+      <div id="modalMetricsContainer" class="modal-metrics-grid">
+        <!-- Dynamically injected via modal.js -->
+      </div>
+    </div>
+
+    <!-- Key Outcomes / Architecture -->
+    <div style="margin-top: 1.5rem;">
+      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sand); display: block; margin-bottom: 0.75rem;">
+        KEY ENGINEERING OUTCOMES
+      </span>
+      <ul id="modalOutcomesList" style="list-style: none; padding-left: 0;">
+        <!-- Dynamically injected via modal.js -->
+      </ul>
+    </div>
+
+    <!-- Tech Stack -->
+    <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid rgba(255, 255, 255, 0.12);">
+      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sand); display: block; margin-bottom: 0.75rem;">
+        TECHNOLOGY STACK
+      </span>
+      <div id="modalTechStack" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        <!-- Dynamically injected via modal.js -->
+      </div>
+    </div>
+  </div>
+</div>

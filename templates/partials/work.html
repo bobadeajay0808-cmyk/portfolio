@@ -1,0 +1,81 @@
+{# ==========================================================================
+   Work ("Case Studies") Section
+   ========================================================================== #}
+<section id="work" class="section-wrapper" aria-label="Selected Projects">
+  <div class="section-header reveal">
+    <div class="tag-pill">
+      <i data-lucide="layers" style="width: 13px; height: 13px;"></i>
+      <span>SELECTED PROJECTS</span>
+    </div>
+    <h2 class="section-title">Case Studies</h2>
+    <p class="section-subtitle">
+      Applied data analytics, automated pipelines, relational schema architectures, and machine learning models.
+    </p>
+  </div>
+
+  <div class="projects-grid">
+    {% for project in data.projects %}
+      <article class="glass-card card-hover-lift project-card reveal">
+        <div class="project-card-header">
+          <!-- Tag Pill (NEW IN / LATEST / AI MODEL) -->
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="tag-pill {% if project.tag == 'NEW IN' %}tag-success{% elif project.tag == 'AI MODEL' %}tag-accent{% endif %}">
+              <span>{{ project.tag }}</span>
+            </div>
+
+            <!-- Overview | Technical Pill Toggle -->
+            <div class="pill-toggle-group" role="group" aria-label="Toggle Project Detail Level">
+              <button type="button" class="pill-toggle-btn active" data-toggle-mode="overview">
+                Overview
+              </button>
+              <button type="button" class="pill-toggle-btn" data-toggle-mode="technical">
+                Technical
+              </button>
+            </div>
+          </div>
+
+          <!-- Project Title -->
+          <h3 class="project-card-title">{{ project.title }}</h3>
+
+          <!-- Text Container (Swapped dynamically by pill toggle) -->
+          <div class="project-text-container">
+            <p class="project-text-view text-overview">
+              {{ project.summary }}
+            </p>
+            <p class="project-text-view text-technical" style="display: none; color: #ffffff;">
+              <span style="color: var(--sand); font-weight: 600;">Spec:</span> {{ project.technical }}
+            </p>
+          </div>
+
+          <!-- Tech Chips -->
+          <div class="project-tech-stack" aria-label="Technologies Used">
+            {% for tech in project.tech %}
+              <span class="tech-chip">{{ tech }}</span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Card Footer: Swatches at left, Arrow Button at right -->
+        <div class="project-card-footer">
+          <!-- Color Swatch Dots -->
+          <div class="color-swatches" aria-label="Project Accent Colors">
+            {% for swatch in project.swatches %}
+              <span class="color-swatch-dot" style="background-color: {{ swatch }};" title="{{ swatch }}"></span>
+            {% endfor %}
+          </div>
+
+          <!-- Square White Arrow Button (Opens Case Study Modal) -->
+          <button
+            type="button"
+            class="btn-square-arrow project-modal-trigger"
+            aria-label="Open detailed case study for {{ project.title }}"
+            data-project-id="{{ project.id }}"
+            data-project='{{ project|tojson }}'
+          >
+            <i data-lucide="arrow-up-right" style="width: 20px; height: 20px;"></i>
+          </button>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>

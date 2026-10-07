@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | {{ data.profile.name }}</title>
+
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Desert Glassmorphism Modular Stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    .login-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-card);
+      padding: 2.75rem 2.25rem;
+      box-shadow: var(--glass-shadow);
+      text-align: center;
+    }
+    .credentials-badge {
+      background: rgba(198, 172, 143, 0.12);
+      border: 1px dashed rgba(198, 172, 143, 0.4);
+      border-radius: var(--radius-pill);
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      color: var(--sand);
+      margin-top: 1.5rem;
+      display: inline-block;
+    }
+    .error-alert {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 0.65rem 1rem;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed Desert Background -->
+  <div class="desert-backdrop" aria-hidden="true"></div>
+  <div class="desert-overlay" aria-hidden="true"></div>
+
+  <main class="login-wrapper">
+    <div class="login-card">
+      <!-- Shield Tag -->
+      <div class="tag-pill tag-accent" style="margin-bottom: 1.25rem;">
+        <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+        <span>ADMIN CONSOLE</span>
+      </div>
+
+      <h1 style="font-size: 1.85rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">
+        Authenticate
+      </h1>
+      <p style="font-size: 0.88rem; color: rgba(245, 235, 224, 0.7); margin-bottom: 1.75rem;">
+        Log in to modify portfolio fields, case studies, and toolstack data.
+      </p>
+
+      {% if error %}
+        <div class="error-alert" role="alert">
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <form method="POST" action="/login" style="text-align: left; display: flex; flex-direction: column; gap: 1.25rem;">
+        <div class="form-group">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="glass-input"
+            placeholder="Enter username"
+            required
+            autocomplete="username"
+            autofocus
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="glass-input"
+            placeholder="Enter password"
+            required
+            autocomplete="current-password"
+          >
+        </div>
+
+        <button type="submit" class="btn-cream-pill" style="margin-top: 0.5rem;">
+          <i data-lucide="log-in" style="width: 16px; height: 16px;"></i>
+          <span>ACCESS ADMIN PANEL</span>
+        </button>
+      </form>
+
+      <div style="margin-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1.25rem;">
+        <a href="/" style="font-size: 0.85rem; color: rgba(245, 235, 224, 0.65); text-decoration: underline; text-underline-offset: 4px;">
+          &larr; Back to Public Portfolio
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

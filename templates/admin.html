@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | {{ data.profile.name }} Portfolio</title>
+
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Desert Glassmorphism Modular Stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sections.css') }}">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+    }
+    .admin-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .admin-nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      background: rgba(10, 9, 8, 0.65);
+      padding: 0.4rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 2rem;
+    }
+    .admin-tab-btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: rgba(245, 235, 224, 0.7);
+      transition: all var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    .admin-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .admin-tab-btn.active {
+      background: var(--cream);
+      color: var(--espresso);
+      font-weight: 700;
+    }
+    .admin-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 36px;
+      padding: 2.25rem;
+      margin-bottom: 2rem;
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+    .item-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+    .delete-btn {
+      color: #f87171;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: var(--radius-pill);
+      padding: 0.35rem 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all var(--transition-fast);
+      cursor: pointer;
+    }
+    .delete-btn:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+    .add-btn {
+      background: rgba(198, 172, 143, 0.15);
+      border: 1.5px dashed rgba(198, 172, 143, 0.4);
+      border-radius: var(--radius-pill);
+      color: var(--sand);
+      padding: 0.65rem 1.5rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all var(--transition-fast);
+      margin-top: 0.75rem;
+      cursor: pointer;
+    }
+    .add-btn:hover {
+      background: var(--sand);
+      color: var(--espresso);
+      border-style: solid;
+    }
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-card);
+      padding: 3rem 2.25rem;
+      box-shadow: var(--glass-shadow);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed Desert Background -->
+  <div class="desert-backdrop" aria-hidden="true"></div>
+  <div class="desert-overlay" aria-hidden="true"></div>
+
+  {% if not is_authenticated %}
+  <!-- ========================================================================
+       AUTH GATE: Displayed when not authenticated
+       ======================================================================== -->
+  <main class="login-container">
+    <div class="login-card">
+      <div class="tag-pill tag-accent" style="margin-bottom: 1.25rem;">
+        <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+        <span>ADMIN CONSOLE</span>
+      </div>
+
+      <h1 style="font-size: 1.85rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">
+        Authenticate
+      </h1>
+      <p style="font-size: 0.88rem; color: rgba(245, 235, 224, 0.7); margin-bottom: 1.75rem;">
+        Please log in to manage your portfolio case studies, toolstack, and profile.
+      </p>
+
+      {% if error %}
+        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.65rem 1rem; border-radius: 16px; font-size: 0.85rem; margin-bottom: 1.25rem; text-align: left;" role="alert">
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <form method="POST" action="/admin/login" style="text-align: left; display: flex; flex-direction: column; gap: 1.25rem;">
+        <div class="form-group">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="glass-input"
+            placeholder="Enter username"
+            required
+            autocomplete="username"
+            autofocus
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="glass-input"
+            placeholder="Enter password"
+            required
+            autocomplete="current-password"
+          >
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 0.6rem; margin-top: -0.25rem; background: rgba(0, 0, 0, 0.25); padding: 0.75rem 0.9rem; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.08);">
+          <input type="checkbox" id="remember" name="remember" value="yes" style="accent-color: var(--terracotta); width: 17px; height: 17px; cursor: pointer; margin-top: 2px;">
+          <div>
+            <label for="remember" style="font-size: 0.82rem; font-weight: 600; color: #fff; cursor: pointer; user-select: none; display: block;">
+              Stay logged in across visits
+            </label>
+            <span style="font-size: 0.75rem; color: rgba(245, 235, 224, 0.65); display: block; line-height: 1.3; margin-top: 2px;">
+              Leave unchecked to auto-lock whenever you return to your public portfolio website.
+            </span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-cream-pill" style="margin-top: 0.5rem;">
+          <i data-lucide="log-in" style="width: 16px; height: 16px;"></i>
+          <span>ACCESS ADMIN PANEL</span>
+        </button>
+      </form>
+
+      <div style="margin-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1.25rem;">
+        <a href="/" style="font-size: 0.85rem; color: rgba(245, 235, 224, 0.85); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.9rem; border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);">
+          <i data-lucide="arrow-left" style="width: 14px; height: 14px; color: var(--terracotta);"></i>
+          <span>Return to Public Portfolio</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    if (window.lucide) window.lucide.createIcons();
+  </script>
+
+  {% else %}
+  <!-- ========================================================================
+       ADMIN DASHBOARD: Displayed when authenticated
+       ======================================================================== -->
+  <div class="admin-container">
+    <!-- Header -->
+    <header class="admin-header">
+      <div>
+        <div class="tag-pill tag-accent" style="margin-bottom: 0.5rem;">
+          <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+          <span>ADMINISTRATION CONSOLE</span>
+        </div>
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #fff;">
+          Portfolio Field Manager
+        </h1>
+        <p style="color: rgba(245, 235, 224, 0.75); font-size: 0.95rem;">
+          Edit profile details, add/remove case studies, update skill proficiencies, and review transmissions.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+        <!-- Return to Public Portfolio Website Button -->
+        <a href="/admin/exit" class="btn-espresso-pill" style="padding: 0.65rem 1.35rem; font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(184, 93, 56, 0.25); border: 1.5px solid rgba(184, 93, 56, 0.55); color: #fff;" title="Safely lock session and return to your portfolio website">
+          <i data-lucide="arrow-left" style="width: 15px; height: 15px; color: var(--terracotta);"></i>
+          <span>Return to Website</span>
+        </a>
+
+        <!-- Live Preview in new tab without closing admin -->
+        <a href="/" target="_blank" class="btn-espresso-pill" style="padding: 0.65rem 1.15rem; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;" title="View public website in a new tab">
+          <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+          <span>Live Preview</span>
+        </a>
+
+        <button id="saveAllBtn" class="btn-cream-pill" style="width: auto; padding: 0.65rem 1.5rem; font-size: 0.82rem;">
+          <i data-lucide="save" style="width: 15px; height: 15px;"></i>
+          <span>Save</span>
+        </button>
+
+        <a href="/admin/logout" class="delete-btn" style="padding: 0.65rem 1rem; font-size: 0.8rem; text-decoration: none;" title="Lock Admin Console">
+          <i data-lucide="lock" style="width: 14px; height: 14px;"></i>
+          <span>Lock / Logout</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="admin-nav-tabs" role="tablist">
+      <button class="admin-tab-btn active" data-tab="tab-profile">
+        <i data-lucide="user" style="width: 15px; height: 15px;"></i>
+        <span>Profile & Hero</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="tab-projects">
+        <i data-lucide="layers" style="width: 15px; height: 15px;"></i>
+        <span>Case Studies (Projects)</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="tab-skills">
+        <i data-lucide="cpu" style="width: 15px; height: 15px;"></i>
+        <span>Toolstack (Skills)</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="tab-education">
+        <i data-lucide="graduation-cap" style="width: 15px; height: 15px;"></i>
+        <span>Academic Journey</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="tab-stats">
+        <i data-lucide="bar-chart-3" style="width: 15px; height: 15px;"></i>
+        <span>Stats</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="tab-messages">
+        <i data-lucide="inbox" style="width: 15px; height: 15px;"></i>
+        <span>Transmissions ({{ messages|length }})</span>
+      </button>
+    </nav>
+
+    <!-- TAB 1: Profile & Hero -->
+    <div id="tab-profile" class="tab-pane">
+      <div class="admin-card">
+        <h2 style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem;">
+          Identity & Primary Profile
+        </h2>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="prof_name" class="glass-input" value="{{ data.profile.name }}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Professional Role</label>
+            <input type="text" id="prof_role" class="glass-input" value="{{ data.profile.role }}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Availability Badge Text</label>
+            <input type="text" id="prof_availability" class="glass-input" value="{{ data.profile.availability }}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <input type="text" id="prof_location" class="glass-input" value="{{ data.profile.location }}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="prof_email" class="glass-input" value="{{ data.profile.email }}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" id="prof_phone" class="glass-input" value="{{ data.profile.phone }}">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1.25rem;">
+          <label class="form-label">Bio (Hero Card & About Card)</label>
+          <textarea id="prof_bio" class="glass-input glass-textarea" rows="3">{{ data.profile.bio }}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Executive Summary (Briefing Card)</label>
+          <textarea id="prof_summary" class="glass-input glass-textarea" rows="3">{{ data.profile.summary }}</textarea>
+        </div>
+
+        <h3 style="font-size: 1.2rem; font-weight: 700; color: #fff; margin: 2rem 0 1rem;">
+          Academic Card (Hero Left)
+        </h3>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">CGPA Score</label>
+            <input type="text" id="prof_cgpa" class="glass-input" value="{{ data.profile.cgpa }}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">CGPA Scale Max</label>
+            <input type="text" id="prof_cgpa_max" class="glass-input" value="{{ data.profile.cgpa_max }}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Degree Title</label>
+            <input type="text" id="prof_degree" class="glass-input" value="{{ data.profile.degree }}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">College / Institution</label>
+            <input type="text" id="prof_college" class="glass-input" value="{{ data.profile.college }}">
+          </div>
+        </div>
+
+        <h3 style="font-size: 1.2rem; font-weight: 700; color: #fff; margin: 2rem 0 1rem;">
+          Hero Core Chips
+        </h3>
+        <div class="form-group">
+          <label class="form-label">Comma-separated Skill Chips</label>
+          <input type="text" id="prof_top_skills" class="glass-input" value="{{ data.top_skills|join(', ') }}">
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Projects (Case Studies) -->
+    <div id="tab-projects" class="tab-pane" style="display: none;">
+      <div class="admin-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 style="font-size: 1.4rem; font-weight: 700; color: #fff;">
+              Case Studies & Projects
+            </h2>
+            <p style="font-size: 0.85rem; color: rgba(245, 235, 224, 0.7);">
+              Edit project specifications, metrics, outcomes, or add new projects to the portfolio.
+            </p>
+          </div>
+          <button type="button" id="addNewProjectBtn" class="add-btn">
+            <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
+            <span>Add New Case Study</span>
+          </button>
+        </div>
+
+        <div id="projectsListContainer">
+          <!-- Rendered via JS from initial data -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Toolstack (Skills) -->
+    <div id="tab-skills" class="tab-pane" style="display: none;">
+      <div class="admin-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 style="font-size: 1.4rem; font-weight: 700; color: #fff;">
+              Toolstack Categories & Skills
+            </h2>
+            <p style="font-size: 0.85rem; color: rgba(245, 235, 224, 0.7);">
+              Adjust proficiency levels (0-100%) and organize skill categories.
+            </p>
+          </div>
+          <button type="button" id="addNewCategoryBtn" class="add-btn">
+            <i data-lucide="folder-plus" style="width: 15px; height: 15px;"></i>
+            <span>Add Skill Category</span>
+          </button>
+        </div>
+
+        <div id="skillsCategoriesContainer">
+          <!-- Rendered via JS from initial data -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Academic Journey (Education) -->
+    <div id="tab-education" class="tab-pane" style="display: none;">
+      <div class="admin-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 style="font-size: 1.4rem; font-weight: 700; color: #fff;">
+              Education Milestones
+            </h2>
+            <p style="font-size: 0.85rem; color: rgba(245, 235, 224, 0.7);">
+              Timeline displayed on the About section.
+            </p>
+          </div>
+          <button type="button" id="addNewEducationBtn" class="add-btn">
+            <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
+            <span>Add Milestone</span>
+          </button>
+        </div>
+
+        <div id="educationListContainer">
+          <!-- Rendered via JS from initial data -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Stats -->
+    <div id="tab-stats" class="tab-pane" style="display: none;">
+      <div class="admin-card">
+        <h2 style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem;">
+          Hero Count-Up Statistics
+        </h2>
+        <div id="statsListContainer" class="form-grid-2">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: Transmissions (Messages) -->
+    <div id="tab-messages" class="tab-pane" style="display: none;">
+      <div class="admin-card">
+        <h2 style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem;">
+          Received Contact Transmissions
+        </h2>
+        {% if messages %}
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            {% for msg in messages %}
+              <div class="item-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <span style="font-weight: 700; color: #fff; font-size: 1.05rem;">{{ msg.name }}</span>
+                  <span style="font-size: 0.75rem; color: var(--sand);">{{ msg.timestamp }}</span>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--sand); margin-bottom: 0.75rem;">
+                  <a href="mailto:{{ msg.email }}" style="color: var(--cream); text-decoration: underline;">{{ msg.email }}</a>
+                </div>
+                <p style="font-size: 0.95rem; color: rgba(245, 235, 224, 0.9); line-height: 1.6; white-space: pre-wrap;">{{ msg.message }}</p>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div style="text-align: center; padding: 3rem 1rem; color: rgba(245, 235, 224, 0.5);">
+            <i data-lucide="inbox" style="width: 48px; height: 48px; stroke-width: 1; margin-bottom: 0.75rem;"></i>
+            <p>No messages received yet. Submissions from the contact form will appear here in real-time.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+        <button id="resetDefaultsBtn" class="delete-btn" style="padding: 0.65rem 1.25rem;">
+          <i data-lucide="rotate-ccw" style="width: 15px; height: 15px;"></i>
+          <span>Reset to Default Data</span>
+        </button>
+        <a href="/admin/exit" class="btn-espresso-pill" style="padding: 0.65rem 1.35rem; font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem; background: rgba(184, 93, 56, 0.2); border: 1px solid rgba(184, 93, 56, 0.45); color: #fff;">
+          <i data-lucide="arrow-left" style="width: 15px; height: 15px; color: var(--terracotta);"></i>
+          <span>Return to Portfolio Website</span>
+        </a>
+      </div>
+
+      <button id="saveAllBtnBottom" class="btn-cream-pill" style="width: auto; padding: 0.85rem 2.25rem;">
+        <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+        <span>Save All Portfolio Fields</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Client-side State Manager -->
+  <script id="portfolio-admin-data" type="application/json">
+    {{ data|tojson|safe }}
+  </script>
+  <script>
+    let PORTFOLIO_STATE = JSON.parse(document.getElementById('portfolio-admin-data').textContent);
+
+    // HTML escape helper to prevent quotes from breaking attributes/textareas
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function initTabs() {
+      const tabBtns = document.querySelectorAll('.admin-tab-btn');
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const targetId = btn.getAttribute('data-tab');
+          document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+          const activePane = document.getElementById(targetId);
+          if (activePane) activePane.style.display = 'block';
+        });
+      });
+    }
+
+    // Projects Manager: Uses textareas and escapeHtml so overview and technical never show up empty!
+    function renderProjects() {
+      const container = document.getElementById('projectsListContainer');
+      if (!container) return;
+
+      container.innerHTML = PORTFOLIO_STATE.projects.map((proj, idx) => `
+        <div class="item-box" data-project-idx="${idx}">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <span class="tag-pill">${escapeHtml(proj.tag || 'CASE STUDY')}</span>
+            <button type="button" class="delete-btn" onclick="removeProject(${idx})">
+              <i data-lucide="trash-2" style="width: 13px; height: 13px;"></i>
+              <span>Delete Project</span>
+            </button>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Project Title</label>
+              <input type="text" class="glass-input" value="${escapeHtml(proj.title || '')}" oninput="PORTFOLIO_STATE.projects[${idx}].title = this.value">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tag Pill (e.g. NEW IN, LATEST, AI MODEL)</label>
+              <input type="text" class="glass-input" value="${escapeHtml(proj.tag || '')}" oninput="PORTFOLIO_STATE.projects[${idx}].tag = this.value">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Summary (Overview Toggle)</label>
+            <textarea class="glass-input glass-textarea" rows="2" placeholder="Concise overview for non-technical stakeholders" oninput="PORTFOLIO_STATE.projects[${idx}].summary = this.value">${escapeHtml(proj.summary || proj.overview || '')}</textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Technical Details (Technical Toggle)</label>
+            <textarea class="glass-input glass-textarea" rows="2" placeholder="Engineering and database specifications" oninput="PORTFOLIO_STATE.projects[${idx}].technical = this.value">${escapeHtml(proj.technical || proj.technical_details || '')}</textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Full Case Study Narrative (Modal)</label>
+            <textarea class="glass-input glass-textarea" rows="3" placeholder="Full breakdown displayed inside popup window" oninput="PORTFOLIO_STATE.projects[${idx}].full_details = this.value">${escapeHtml(proj.full_details || '')}</textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Technologies (comma separated)</label>
+            <input type="text" class="glass-input" value="${escapeHtml((proj.tech || []).join(', '))}" oninput="PORTFOLIO_STATE.projects[${idx}].tech = this.value.split(',').map(s=>s.trim()).filter(Boolean)">
+          </div>
+        </div>
+      `).join('');
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function removeProject(idx) {
+      if (confirm('Are you sure you want to delete this project?')) {
+        PORTFOLIO_STATE.projects.splice(idx, 1);
+        renderProjects();
+      }
+    }
+
+    const addNewProjBtn = document.getElementById('addNewProjectBtn');
+    if (addNewProjBtn) {
+      addNewProjBtn.addEventListener('click', () => {
+        PORTFOLIO_STATE.projects.push({
+          id: 'new-project-' + Date.now(),
+          tag: 'NEW IN',
+          title: 'New Case Study',
+          summary: 'Enter a concise summary of the business intelligence outcomes.',
+          technical: 'Detail your data modeling, database architecture, or machine learning pipelines.',
+          tech: ['Python', 'SQL', 'Power BI'],
+          swatches: ['#c6ac8f', '#634832'],
+          metrics: [
+            { label: 'Metric One', value: '10,000+' },
+            { label: 'Metric Two', value: '99%' }
+          ],
+          full_details: 'Enter complete case study breakdown.',
+          key_outcomes: ['Streamlined processing latency', 'Unified disparate data silos']
+        });
+        renderProjects();
+      });
+    }
+
+    // Skills Manager
+    function renderSkills() {
+      const container = document.getElementById('skillsCategoriesContainer');
+      if (!container) return;
+
+      container.innerHTML = PORTFOLIO_STATE.skills_categories.map((cat, catIdx) => `
+        <div class="item-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div style="font-weight: 700; color: #fff; font-size: 1.15rem;">
+              Category: ${escapeHtml(cat.category)}
+            </div>
+            <button type="button" class="delete-btn" onclick="removeSkillCategory(${catIdx})">
+              <i data-lucide="trash-2" style="width: 13px; height: 13px;"></i>
+              <span>Delete Category</span>
+            </button>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Category Title</label>
+              <input type="text" class="glass-input" value="${escapeHtml(cat.category)}" oninput="PORTFOLIO_STATE.skills_categories[${catIdx}].category = this.value">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category Subtitle / Description</label>
+              <input type="text" class="glass-input" value="${escapeHtml(cat.description)}" oninput="PORTFOLIO_STATE.skills_categories[${catIdx}].description = this.value">
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <label class="form-label">Skills & Proficiency (%)</label>
+            <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem;">
+              ${cat.skills.map((skill, skillIdx) => `
+                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                  <input type="text" class="glass-input" style="flex: 2;" value="${escapeHtml(skill.name)}" oninput="PORTFOLIO_STATE.skills_categories[${catIdx}].skills[${skillIdx}].name = this.value">
+                  <input type="number" min="0" max="100" class="glass-input" style="width: 90px;" value="${skill.level}" oninput="PORTFOLIO_STATE.skills_categories[${catIdx}].skills[${skillIdx}].level = parseInt(this.value)||0">
+                  <span style="font-weight: 600; color: var(--sand); width: 25px;">%</span>
+                  <button type="button" class="delete-btn" onclick="removeSkill(${catIdx}, ${skillIdx})">
+                    <i data-lucide="x" style="width: 13px; height: 13px;"></i>
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+
+            <button type="button" class="add-btn" style="margin-top: 0.85rem;" onclick="addSkillToCategory(${catIdx})">
+              <i data-lucide="plus" style="width: 13px; height: 13px;"></i>
+              <span>Add Skill to ${escapeHtml(cat.category)}</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function addSkillToCategory(catIdx) {
+      PORTFOLIO_STATE.skills_categories[catIdx].skills.push({ name: 'New Skill', level: 85 });
+      renderSkills();
+    }
+
+    function removeSkill(catIdx, skillIdx) {
+      PORTFOLIO_STATE.skills_categories[catIdx].skills.splice(skillIdx, 1);
+      renderSkills();
+    }
+
+    function removeSkillCategory(catIdx) {
+      if (confirm('Delete this entire skill category?')) {
+        PORTFOLIO_STATE.skills_categories.splice(catIdx, 1);
+        renderSkills();
+      }
+    }
+
+    const addNewCatBtn = document.getElementById('addNewCategoryBtn');
+    if (addNewCatBtn) {
+      addNewCatBtn.addEventListener('click', () => {
+        PORTFOLIO_STATE.skills_categories.push({
+          category: 'New Category',
+          description: 'Describe capabilities in this discipline.',
+          skills: [{ name: 'Skill 1', level: 80 }]
+        });
+        renderSkills();
+      });
+    }
+
+    // Education Manager
+    function renderEducation() {
+      const container = document.getElementById('educationListContainer');
+      if (!container) return;
+
+      container.innerHTML = PORTFOLIO_STATE.education.map((edu, idx) => `
+        <div class="item-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <span class="tag-pill">${escapeHtml(edu.year)}</span>
+            <button type="button" class="delete-btn" onclick="removeEducation(${idx})">
+              <i data-lucide="trash-2" style="width: 13px; height: 13px;"></i>
+              <span>Delete Milestone</span>
+            </button>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Year / Status</label>
+              <input type="text" class="glass-input" value="${escapeHtml(edu.year)}" oninput="PORTFOLIO_STATE.education[${idx}].year = this.value">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Degree / Certificate</label>
+              <input type="text" class="glass-input" value="${escapeHtml(edu.degree)}" oninput="PORTFOLIO_STATE.education[${idx}].degree = this.value">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Institution / School</label>
+              <input type="text" class="glass-input" value="${escapeHtml(edu.institution)}" oninput="PORTFOLIO_STATE.education[${idx}].institution = this.value">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Grade / CGPA</label>
+              <input type="text" class="glass-input" value="${escapeHtml(edu.grade)}" oninput="PORTFOLIO_STATE.education[${idx}].grade = this.value">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Badge Label</label>
+              <input type="text" class="glass-input" value="${escapeHtml(edu.badge || '')}" oninput="PORTFOLIO_STATE.education[${idx}].badge = this.value">
+            </div>
+          </div>
+        </div>
+      `).join('');
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function removeEducation(idx) {
+      if (confirm('Delete this education milestone?')) {
+        PORTFOLIO_STATE.education.splice(idx, 1);
+        renderEducation();
+      }
+    }
+
+    const addNewEduBtn = document.getElementById('addNewEducationBtn');
+    if (addNewEduBtn) {
+      addNewEduBtn.addEventListener('click', () => {
+        PORTFOLIO_STATE.education.push({
+          year: '2026',
+          degree: 'Master of Science in Data Science',
+          institution: 'University Name',
+          grade: 'Distinction',
+          badge: 'Graduate'
+        });
+        renderEducation();
+      });
+    }
+
+    // Stats Manager
+    function renderStats() {
+      const container = document.getElementById('statsListContainer');
+      if (!container) return;
+
+      container.innerHTML = PORTFOLIO_STATE.stats.map((st, idx) => `
+        <div class="item-box">
+          <div class="form-group">
+            <label class="form-label">Stat Value</label>
+            <input type="text" class="glass-input" value="${escapeHtml(st.value)}" oninput="PORTFOLIO_STATE.stats[${idx}].value = this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Suffix (e.g. +, /10)</label>
+            <input type="text" class="glass-input" value="${escapeHtml(st.suffix || '')}" oninput="PORTFOLIO_STATE.stats[${idx}].suffix = this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Label</label>
+            <input type="text" class="glass-input" value="${escapeHtml(st.label)}" oninput="PORTFOLIO_STATE.stats[${idx}].label = this.value">
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Save All Handler
+    async function saveAllData() {
+      PORTFOLIO_STATE.profile.name = document.getElementById('prof_name').value.trim();
+      PORTFOLIO_STATE.profile.role = document.getElementById('prof_role').value.trim();
+      PORTFOLIO_STATE.profile.availability = document.getElementById('prof_availability').value.trim();
+      PORTFOLIO_STATE.profile.location = document.getElementById('prof_location').value.trim();
+      PORTFOLIO_STATE.profile.email = document.getElementById('prof_email').value.trim();
+      PORTFOLIO_STATE.profile.phone = document.getElementById('prof_phone').value.trim();
+      PORTFOLIO_STATE.profile.bio = document.getElementById('prof_bio').value.trim();
+      PORTFOLIO_STATE.profile.summary = document.getElementById('prof_summary').value.trim();
+      PORTFOLIO_STATE.profile.cgpa = document.getElementById('prof_cgpa').value.trim();
+      PORTFOLIO_STATE.profile.cgpa_max = document.getElementById('prof_cgpa_max').value.trim();
+      PORTFOLIO_STATE.profile.degree = document.getElementById('prof_degree').value.trim();
+      PORTFOLIO_STATE.profile.college = document.getElementById('prof_college').value.trim();
+
+      const topSkillsRaw = document.getElementById('prof_top_skills').value;
+      PORTFOLIO_STATE.top_skills = topSkillsRaw.split(',').map(s => s.trim()).filter(Boolean);
+
+      try {
+        const res = await fetch('/api/admin/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(PORTFOLIO_STATE)
+        });
+        const result = await res.json();
+        if (res.ok && result.status === 'success') {
+          alert('✅ ' + result.message);
+        } else {
+          alert('❌ Failed to save: ' + (result.message || 'Unknown error'));
+        }
+      } catch (err) {
+        alert('❌ Error connecting to server: ' + err.message);
+      }
+    }
+
+    const saveBtnTop = document.getElementById('saveAllBtn');
+    if (saveBtnTop) saveBtnTop.addEventListener('click', saveAllData);
+
+    const saveBtnBottom = document.getElementById('saveAllBtnBottom');
+    if (saveBtnBottom) saveBtnBottom.addEventListener('click', saveAllData);
+
+    const resetBtn = document.getElementById('resetDefaultsBtn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', async () => {
+        if (confirm('Reset all fields back to default Ajay Dilip Bobade configuration?')) {
+          await fetch('/api/admin/reset', { method: 'POST' });
+          window.location.reload();
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTabs();
+      renderProjects();
+      renderSkills();
+      renderEducation();
+      renderStats();
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+  {% endif %}
+</body>
+</html>

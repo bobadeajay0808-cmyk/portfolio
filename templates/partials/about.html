@@ -1,0 +1,72 @@
+{# ==========================================================================
+   About Section (1.2fr / 1fr Grid)
+   ========================================================================== #}
+<section id="about" class="section-wrapper" aria-label="About the Analyst">
+  <div class="about-grid">
+
+    {# ----------------------------------------------------------------------
+       Left Card (1.2fr): The Analyst Bio & Count-Up Stats
+       ---------------------------------------------------------------------- #}
+    <article class="glass-card card-hover-lift reveal" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div class="tag-pill tag-accent" style="margin-bottom: 1.25rem;">
+          <i data-lucide="compass" style="width: 13px; height: 13px;"></i>
+          <span>THE ANALYST</span>
+        </div>
+
+        <h2 class="section-title" style="margin-bottom: 1.25rem; font-size: clamp(2rem, 3.8vw, 3rem);">
+          Decoding Data into Decisions.
+        </h2>
+
+        <p style="font-size: 1.05rem; line-height: 1.75; color: rgba(245, 235, 224, 0.9); margin-bottom: 1.25rem;">
+          {{ data.profile.bio }}
+        </p>
+
+        <p style="font-size: 0.95rem; line-height: 1.65; color: rgba(245, 235, 224, 0.75);">
+          {{ data.profile.summary }}
+        </p>
+      </div>
+
+      <!-- Animated Count-Up Stats -->
+      <div class="stats-counter-row" aria-label="Key Analyst Metrics">
+        {% for stat in data.stats %}
+          <div class="stat-item">
+            <div class="stat-number">
+              <span data-counter-target="{{ stat.value }}">0</span>{{ stat.suffix }}
+            </div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+
+    {# ----------------------------------------------------------------------
+       Right Card (1fr): Academic Journey Vertical Timeline
+       ---------------------------------------------------------------------- #}
+    <article class="glass-card card-hover-lift reveal" style="animation-delay: 150ms;">
+      <div class="tag-pill" style="margin-bottom: 1.25rem;">
+        <i data-lucide="graduation-cap" style="width: 13px; height: 13px;"></i>
+        <span>ACADEMIC JOURNEY</span>
+      </div>
+
+      <h3 style="font-size: 1.85rem; font-weight: 700; color: #ffffff; margin-bottom: 0.75rem;">
+        Education & Rigor
+      </h3>
+
+      <div class="timeline-container">
+        {% for edu in data.education %}
+          <div class="timeline-item">
+            <div class="timeline-dot" aria-hidden="true"></div>
+            <div class="timeline-content">
+              <span class="timeline-year">{{ edu.year }} &bull; {{ edu.badge }}</span>
+              <h4 class="timeline-degree">{{ edu.degree }}</h4>
+              <p class="timeline-institution">{{ edu.institution }}</p>
+              <div class="timeline-grade-badge">Grade: {{ edu.grade }}</div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+
+  </div>
+</section>

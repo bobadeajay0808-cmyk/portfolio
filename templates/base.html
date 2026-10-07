@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ data.profile.name }} | {{ data.profile.role }} Portfolio</title>
+  <meta name="description" content="{{ data.profile.bio }}">
+
+  <!-- OpenGraph Social Metadata -->
+  <meta property="og:title" content="{{ data.profile.name }} | {{ data.profile.role }}">
+  <meta property="og:description" content="{{ data.profile.bio }}">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Desert Glassmorphism Modular Stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sections.css') }}">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <!-- Desert Fixed Atmospheric Backdrop (Canyon Photo + Blur + Teal-to-Terracotta Gradient) -->
+  <div class="desert-backdrop" aria-hidden="true"></div>
+  <div class="desert-overlay" aria-hidden="true"></div>
+  <div class="desert-grain" aria-hidden="true"></div>
+
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress-bar" id="scrollProgressBar" aria-hidden="true"></div>
+
+  <!-- Custom Lagging Ring Cursor -->
+  <div class="custom-cursor-dot" aria-hidden="true"></div>
+  <div class="custom-cursor-ring" aria-hidden="true"></div>
+
+  <!-- Floating Pill Glass Navbar -->
+  <header class="glass-navbar-wrapper">
+    <nav class="glass-navbar" aria-label="Main Navigation">
+      <a href="#hero" class="nav-link active" aria-current="page">Home</a>
+      <a href="#work" class="nav-link">Work</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="/admin" class="nav-link nav-admin-link" aria-label="Admin Console" style="display: inline-flex; align-items: center; gap: 0.35rem; color: var(--sand); border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 0.85rem; margin-left: 0.25rem;">
+        <i data-lucide="shield-check" style="width: 14px; height: 14px; color: var(--terracotta);"></i>
+        <span>Admin</span>
+      </a>
+    </nav>
+  </header>
+
+  <!-- Main Content Container -->
+  <main id="mainContent">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-wrapper">
+    <div style="display: flex; gap: 0.75rem; align-items: center; justify-content: center;">
+      {% for soc in data.socials %}
+        <a href="{{ soc.url }}" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="{{ soc.aria_label }}">
+          <i data-lucide="{{ soc.icon }}"></i>
+        </a>
+      {% endfor %}
+    </div>
+    <p style="font-size: 0.88rem; color: rgba(245, 235, 224, 0.65);">
+      &copy; {{ data.profile.name }} &bull; {{ data.profile.role }} &bull; {{ data.profile.location }}
+    </p>
+    <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; margin-top: 0.5rem;">
+      <a href="#hero" id="backToTopBtn" class="back-to-top-btn" aria-label="Back to top of page">
+        <i data-lucide="arrow-up" style="width: 14px; height: 14px;"></i>
+        <span>Back to Top</span>
+      </a>
+      <a href="/admin" class="back-to-top-btn" aria-label="Open Admin Console" style="border-color: rgba(198, 172, 143, 0.4); color: var(--sand);">
+        <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+        <span>Admin Console</span>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Project Details Modal Partial -->
+  {% include 'partials/modal.html' %}
+
+  <!-- Core JavaScript Modules -->
+  <script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/animations.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

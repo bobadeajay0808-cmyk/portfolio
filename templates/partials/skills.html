@@ -1,0 +1,49 @@
+{# ==========================================================================
+   Skills ("Toolstack") Section
+   ========================================================================== #}
+<section id="skills" class="section-wrapper" aria-label="Technology Stack">
+  <div class="section-header reveal">
+    <div class="tag-pill">
+      <i data-lucide="cpu" style="width: 13px; height: 13px;"></i>
+      <span>TECHNOLOGY</span>
+    </div>
+    <h2 class="section-title">Toolstack</h2>
+    <p class="section-subtitle">
+      Specialized technical capabilities across business intelligence, data modeling, SQL optimization, and interface prototyping.
+    </p>
+  </div>
+
+  <div class="skills-grid">
+    {% for category in data.skills_categories %}
+      <article class="glass-card card-hover-lift skills-category-card reveal">
+        <div>
+          <div class="tag-pill" style="margin-bottom: 0.85rem;">
+            <span>STACK 0{{ loop.index }}</span>
+          </div>
+          <h3 style="font-size: 1.65rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem;">
+            {{ category.category }}
+          </h3>
+          <p style="font-size: 0.9rem; color: rgba(245, 235, 224, 0.75);">
+            {{ category.description }}
+          </p>
+        </div>
+
+        {# Skills List: Render ONLY skill.name as pill chip with animated progress bar #}
+        <div class="skills-list" role="list">
+          {% for skill in category.skills %}
+            <div class="skill-pill-item" role="listitem">
+              <div class="skill-header">
+                {# BUG FIX: Render strictly skill.name, NEVER print raw dict or object #}
+                <span class="skill-name-badge">{{ skill.name }}</span>
+                <span class="skill-percentage">{{ skill.level }}%</span>
+              </div>
+              <div class="skill-progress-track" aria-hidden="true">
+                <div class="skill-progress-fill" data-level="{{ skill.level }}"></div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>

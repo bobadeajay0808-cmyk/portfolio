@@ -1,0 +1,86 @@
+{# ==========================================================================
+   Contact Section: Start a Conversation
+   ========================================================================== #}
+<section id="contact" class="section-wrapper contact-section-container" aria-label="Contact Section">
+  <article class="glass-card contact-card reveal">
+
+    <!-- Tag & Heading -->
+    <div class="tag-pill" style="margin-bottom: 1rem;">
+      <i data-lucide="radio" style="width: 13px; height: 13px;"></i>
+      <span>CONTACT</span>
+    </div>
+
+    <h2 class="section-title" style="margin-bottom: 0.75rem;">
+      Start a Conversation
+    </h2>
+
+    <p style="font-size: 1rem; color: rgba(245, 235, 224, 0.8); max-width: 480px; margin-bottom: 2rem;">
+      Looking to explore data consulting, business intelligence modeling, or full-time opportunities? Send a transmission below.
+    </p>
+
+    <!-- Transmission Form -->
+    <form id="contactTransmissionForm" class="contact-form" novalidate>
+      <!-- Name Input -->
+      <div class="form-group">
+        <label for="contactName" class="form-label">Full Name</label>
+        <input
+          type="text"
+          id="contactName"
+          name="name"
+          class="glass-input"
+          placeholder="e.g. Elena Vance"
+          required
+        />
+      </div>
+
+      <!-- Email Input -->
+      <div class="form-group">
+        <label for="contactEmail" class="form-label">Email Address</label>
+        <input
+          type="email"
+          id="contactEmail"
+          name="email"
+          class="glass-input"
+          placeholder="e.g. elena@company.com"
+          required
+        />
+      </div>
+
+      <!-- Message Textarea -->
+      <div class="form-group">
+        <label for="contactMessage" class="form-label">Transmission Message</label>
+        <textarea
+          id="contactMessage"
+          name="message"
+          class="glass-input glass-textarea"
+          placeholder="Detail your dataset requirements, project objectives, or collaboration timeline..."
+          rows="4"
+          required
+        ></textarea>
+      </div>
+
+      <!-- Submission Status Feedback Box -->
+      <div id="contactFormStatus" style="font-size: 0.88rem; min-height: 24px; margin-bottom: 1rem; font-weight: 500;" role="status" aria-live="polite"></div>
+
+      <!-- Full-Width Cream Pill Submit Button -->
+      <button type="submit" id="contactSubmitBtn" class="btn-cream-pill">
+        <span>SEND TRANSMISSION</span>
+        <i data-lucide="send" style="width: 17px; height: 17px;"></i>
+      </button>
+    </form>
+
+    <!-- Circular Glass Social Links (Cream / White, No Default Blue) -->
+    <div class="contact-socials-row" aria-label="Direct Social Channels">
+      {% for soc in data.socials %}
+        <a href="{{ soc.url }}" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="{{ soc.aria_label }}">
+          <i data-lucide="{{ soc.icon }}" style="width: 18px; height: 18px;"></i>
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Direct Email Address Display -->
+    <p style="font-size: 0.85rem; color: var(--sand); margin-top: 1.25rem;">
+      Direct Line: <a href="mailto:{{ data.profile.email }}" style="color: var(--cream); text-decoration: underline; text-underline-offset: 4px;">{{ data.profile.email }}</a>
+    </p>
+  </article>
+</section>

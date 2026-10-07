@@ -1,0 +1,387 @@
+/* ==========================================================================
+   Desert Glassmorphism - Reusable Components & UI Elements
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Frosted Glass Cards (Base & Tilt Containers)
+   -------------------------------------------------------------------------- */
+.glass-card {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--glass-shadow);
+  color: var(--cream);
+  padding: 2.75rem;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base), background-color var(--transition-base);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.glass-card:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-hover);
+}
+
+/* Card Lift & Tilt active state */
+.card-hover-lift:hover {
+  transform: translateY(-10px);
+}
+
+/* --------------------------------------------------------------------------
+   2. Floating Pill Navbar
+   -------------------------------------------------------------------------- */
+.glass-navbar-wrapper {
+  position: fixed;
+  top: 1.75rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 900;
+  padding: 0 1rem;
+  pointer-events: none;
+}
+
+.glass-navbar {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.65rem;
+  background: rgba(15, 14, 12, 0.72);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  transition: all var(--transition-base);
+}
+
+.nav-link {
+  position: relative;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: rgba(245, 235, 224, 0.75);
+  transition: color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.nav-link.active {
+  color: var(--espresso);
+  background: var(--cream);
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(245, 235, 224, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   3. Outlined Pill Tags & Badges
+   -------------------------------------------------------------------------- */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(198, 172, 143, 0.35);
+  background: rgba(198, 172, 143, 0.08);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sand);
+  width: fit-content;
+  backdrop-filter: blur(10px);
+}
+
+.tag-pill.tag-success {
+  border-color: rgba(134, 185, 144, 0.4);
+  background: rgba(134, 185, 144, 0.12);
+  color: #a3e635;
+}
+
+.tag-pill.tag-accent {
+  border-color: rgba(184, 93, 56, 0.4);
+  background: rgba(184, 93, 56, 0.12);
+  color: #ff9d76;
+}
+
+/* Status Indicator Dot */
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #4ade80;
+  box-shadow: 0 0 8px #4ade80;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* --------------------------------------------------------------------------
+   4. Buttons
+   -------------------------------------------------------------------------- */
+/* Dark Espresso Pill Button */
+.btn-espresso-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.9rem 2rem;
+  background-color: var(--espresso);
+  border: 1.5px solid rgba(198, 172, 143, 0.3);
+  border-radius: var(--radius-pill);
+  color: var(--cream);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: all var(--transition-base);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.btn-espresso-pill:hover {
+  background-color: var(--mocha);
+  border-color: var(--sand);
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(198, 172, 143, 0.25);
+}
+
+/* Cream Full-width Pill Submit Button */
+.btn-cream-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 1.05rem 2rem;
+  background: var(--cream);
+  border: 1.5px solid #ffffff;
+  border-radius: var(--radius-pill);
+  color: var(--espresso);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: all var(--transition-base);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.btn-cream-pill:hover:not(:disabled) {
+  background: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 35px rgba(245, 235, 224, 0.35);
+}
+
+.btn-cream-pill:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-cream-pill.btn-success {
+  background: #22c55e;
+  color: #ffffff;
+  border-color: #86efac;
+  box-shadow: 0 10px 30px rgba(34, 197, 94, 0.35);
+}
+
+/* Square White Arrow Button */
+.btn-square-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--cream);
+  color: var(--espresso);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all var(--transition-fast);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.btn-square-arrow:hover {
+  background: #ffffff;
+  transform: translate(2px, -2px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(245, 235, 224, 0.45);
+}
+
+/* Circular Social & Action Buttons */
+.social-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  color: var(--cream) !important;
+  backdrop-filter: blur(12px);
+  transition: all var(--transition-fast);
+}
+
+.social-icon-btn:hover {
+  background: var(--cream);
+  color: var(--espresso) !important;
+  border-color: var(--cream);
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 8px 20px rgba(198, 172, 143, 0.3);
+}
+
+.social-icon-btn i,
+.social-icon-btn svg {
+  color: inherit !important;
+  stroke: currentColor;
+}
+
+/* --------------------------------------------------------------------------
+   5. Tech Chips & Interactive Toggles
+   -------------------------------------------------------------------------- */
+.tech-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sand);
+}
+
+/* Pill Toggle Switch: Overview | Technical */
+.pill-toggle-group {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(10, 9, 8, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-pill);
+  padding: 0.25rem;
+  gap: 0.2rem;
+  width: fit-content;
+}
+
+.pill-toggle-btn {
+  padding: 0.35rem 0.95rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: rgba(245, 235, 224, 0.65);
+  transition: all var(--transition-fast);
+}
+
+.pill-toggle-btn:hover {
+  color: var(--cream);
+}
+
+.pill-toggle-btn.active {
+  background: rgba(198, 172, 143, 0.2);
+  color: var(--cream);
+  font-weight: 600;
+  border: 1px solid rgba(198, 172, 143, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   6. Form Controls
+   -------------------------------------------------------------------------- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.4rem;
+}
+
+.form-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sand);
+}
+
+.glass-input {
+  width: 100%;
+  padding: 1rem 1.4rem;
+  background: rgba(10, 9, 8, 0.55);
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-pill);
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.glass-input::placeholder {
+  color: rgba(245, 235, 224, 0.55);
+}
+
+.glass-input:focus {
+  border-color: var(--sand);
+  background: rgba(15, 14, 12, 0.8);
+  box-shadow: 0 0 20px rgba(198, 172, 143, 0.35);
+}
+
+.glass-textarea {
+  border-radius: 26px;
+  min-height: 130px;
+  resize: vertical;
+}
+
+/* --------------------------------------------------------------------------
+   7. Reveal Animation (Fade and Slide Up on Scroll)
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .card-hover-lift:hover {
+    transform: none !important;
+  }
+}
