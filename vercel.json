@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/**/*.py": {
+      "includeFiles": "{templates/**,static/**,data.py,app.py,data.json,messages.json,portfolio/**}"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
