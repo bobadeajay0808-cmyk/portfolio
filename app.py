@@ -324,6 +324,25 @@ def page_not_found(e):
     return redirect(url_for("admin_panel"))
 
 
+@app.errorhandler(Exception)
+def handle_unexpected_error(e):
+    """Catches any internal runtime error and prints full traceback instead of 500 crash."""
+    import traceback
+    err_trace = traceback.format_exc()
+    print("CRITICAL FLASK RUNTIME ERROR:\n", err_trace, file=sys.stderr)
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head><title>Flask Runtime Error</title></head>
+    <body style="font-family: monospace; background: #0a0908; color: #f5ebe0; padding: 2rem;">
+        <h2 style="color: #ff9d76;">⚠️ Flask Runtime Error</h2>
+        <p>An unexpected error occurred during page rendering:</p>
+        <pre style="background: rgba(255,255,255,0.08); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); color: #fca5a5; white-space: pre-wrap;">{err_trace}</pre>
+    </body>
+    </html>
+    """, 500
+
+
 if __name__ == "__main__":
     print("🏜️  Portfolio running at http://0.0.0.0:5001")
     print("🔑 Admin Panel available at http://0.0.0.0:5001/admin")
