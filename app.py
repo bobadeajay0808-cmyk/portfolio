@@ -10,7 +10,14 @@ from datetime import datetime
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from data import DATA as DEFAULT_DATA
 
-app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, "templates"),
+    static_folder=os.path.join(BASE_DIR, "static"),
+    static_url_path="/static"
+)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "desert-glassmorphism-secret-key-2026")
 
 # Admin Login Credentials
@@ -71,8 +78,11 @@ def load_portfolio_data():
 
 def save_portfolio_data(data):
     """Saves updated portfolio data to data.json."""
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+    try:
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
+    except OSError as e:
+        print(f"⚠️ Serverless/Read-only filesystem warning (save_portfolio_data): {e}")
 
 
 def load_messages():
@@ -88,10 +98,13 @@ def load_messages():
 
 def save_message(message_item):
     """Appends a new transmission to messages.json."""
-    messages = load_messages()
-    messages.insert(0, message_item)
-    with open(MESSAGES_FILE, "w", encoding="utf-8") as f:
-        json.dump(messages, f, indent=4, ensure_ascii=False)
+    try:
+        messages = load_messages()
+        messages.insert(0, message_item)
+        with open(MESSAGES_FILE, "w", encoding="utf-8") as f:
+            json.dump(messages, f, indent=4, ensure_ascii=False)
+    except OSError as e:
+        print(f"⚠️ Serverless/Read-only filesystem warning (save_message): {e}")
 
 
 # -----------------------------------------------------------------------------
